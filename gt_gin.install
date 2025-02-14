@@ -1,0 +1,44 @@
+<?php
+
+/**
+ * @file
+ * Installation checks, borrowed from the gin_toolbar module.
+ */
+
+use Drupal\Core\Installer\InstallerKernel;
+
+/**
+ * Implements hook_requirements().
+ */
+function gt_gin_requirements($phase) {
+  $requirements = [];
+
+  # If it's not the installation phase: skip the requirements check.
+  if ($phase !== 'install') {
+    return $requirements;
+  }
+
+  # If the Gin theme is installed: skip the requirements check.
+  $installed = \Drupal::service('theme_handler')->themeExists('gin');
+  if ($installed) {
+    return $requirements;
+  }
+
+  # If Drupal is being installed and Gin is part of the Drupal installation profile: skip the requirements check.
+  global $install_state;
+  if (InstallerKernel::installationAttempted()
+    && isset($install_state['profile_info']['themes'])
+    && in_array('gin', $install_state['profile_info']['themes'], TRUE)
+  ) {
+    return $requirements;
+  }
+
+  # Otherwise: Gin is not installed, and we need to show an error for the requirements check.
+  $requirements['gin'] = [
+    'title' => t('Gin'),
+    'description' => t('The GT Gin module works with the <a href="https://www.drupal.org/project/gin" target="_blank">Gin</a> theme only'),
+    'severity' => REQUIREMENT_ERROR,
+  ];
+
+  return $requirements;
+}

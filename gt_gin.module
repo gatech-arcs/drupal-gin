@@ -1,0 +1,8 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for gt_gin module.
+ */
+
+use Drupal\gin\GinSettings;

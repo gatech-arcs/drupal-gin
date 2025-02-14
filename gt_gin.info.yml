@@ -1,0 +1,7 @@
+name: GT Gin
+type: module
+description: 'Custom theming for Gin admin theme.'
+package: GT
+core_version_requirement: ^10 || ^11
+dependencies:
+  - gin_toolbar:gin_toolbar
